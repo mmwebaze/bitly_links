@@ -1,0 +1,6 @@
+services:
+  bitly_links.manager_service:
+    class: Drupal\bitly_links\Service\BitlyLinksManager
+    arguments: ['@http_client', '@logger.factory', '@state']
+    tags:
+      - { name: bitly_links_manager_service }

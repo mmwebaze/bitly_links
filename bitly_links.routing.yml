@@ -1,0 +1,59 @@
+bitly_links.main_menu:
+  path: '/admin/bitly_links'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Bitly Links'
+  requirements:
+    _permission: 'access administration pages'
+
+bitly_links.authorize_app:
+  path: '/admin/bitly_links/authorize'
+  defaults:
+    _form: '\Drupal\bitly_links\Form\BitlyLinksAuthorizationForm'
+    _title: 'App Authorization'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+bitly_links.app_authorization:
+  path: '/bitly_links/authorization'
+  defaults:
+    _controller: '\Drupal\bitly_links\Controller\BitlyLinksController::getAuthorization'
+    _title: 'Get Authorization'
+  requirements:
+    _permission: 'access administration pages'
+
+bitly_links.oauthPage:
+  path: '/bitly_links/oauthPage'
+  defaults:
+    _controller: '\Drupal\bitly_links\Controller\BitlyLinksController::oauthPage'
+    _title: 'Get Code'
+  requirements:
+    _permission: 'access administration pages'
+
+bitly_links.access_status:
+  path: '/admin/bitly_links/access_status'
+  defaults:
+    _controller: '\Drupal\bitly_links\Controller\BitlyLinksController::accessStatus'
+    _title: 'Access Status'
+  requirements:
+    _permission: 'access administration pages'
+
+bitly_links.shorten_test:
+  path: '/admin/bitly_links/shorten_test'
+  defaults:
+    _controller: '\Drupal\bitly_links\Controller\BitlyLinksController::testShort'
+    _title: 'Shorten Test'
+  requirements:
+    _permission: 'access administration pages'
+
+bitly_links.settings:
+  path: '/admin/config/bitly_links/settings'
+  defaults:
+    _form: '\Drupal\bitly_links\Form\BitlyLinksSettingsForm'
+    _title: 'Settings'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE

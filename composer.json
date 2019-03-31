@@ -1,0 +1,14 @@
+{
+  "name": "drupal/bitly_links",
+  "type": "drupal-module",
+  "description": "Generates bitly links.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/bitly_links",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/bitly_links",
+    "source": "http://cgit.drupalcode.org/bitly_links"
+  },
+  "require": { }
+}
