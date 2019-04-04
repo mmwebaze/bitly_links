@@ -12,8 +12,9 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 
-class BitlyLinksSettingsForm extends ConfigFormBase
+class BitlyLinksNodeSettingsForm extends ConfigFormBase
 {
+    private $enableTypes = array();
     /**
      * @var \Drupal\Core\Entity\EntityTypeManagerInterface
      */
@@ -56,6 +57,9 @@ class BitlyLinksSettingsForm extends ConfigFormBase
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
         $config = $this->config('bitly_links.settings');
+        $enabled_types = $config->get('enabled_content_types');
+        $default_values = array_keys($enabled_types);
+        //print_r($default_values);die();
         $form['enabled_content_types'] = [
             '#type' => 'details',
             '#open' => TRUE,
@@ -68,9 +72,11 @@ class BitlyLinksSettingsForm extends ConfigFormBase
         $types = $storage->loadMultiple();
 
         foreach ($types as $type => $contentType){
+            $this->enableTypes[$type] = $contentType->label();
             $form['enabled_content_types'][$type] = array(
                 '#type' => 'checkbox',
                 '#title' => $contentType->label(),
+                '#default_value' => in_array($type, $default_values) ? 1 : 0,
             );
         }
 
@@ -80,21 +86,27 @@ class BitlyLinksSettingsForm extends ConfigFormBase
      * {@inheritdoc}
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
+        $enabledTypes = array();
 
         foreach ($form_state->getValues() as $key => $value) {
-            //print_r($key." -- ".$value."\n");
             if ($key == 'enabled_content_types'){
                 foreach ($value as $type => $enabled){
 
                     if ($enabled == '1'){
-                        $entity = $this->checkFieldExists('bitly_links_field', $type);
-                        print_r($entity);die();
-                        $this->createField('bitly_links_field', 'bitly links', $type, 'node');
+                        $enabledTypes[$type] = $this->enableTypes[$type];
+                        $hasField = $this->checkFieldExists('bitly_links_field', $type);
+
+                        if ($hasField != 1){
+                            $this->createField('bitly_links_field', 'bitly links', $type, 'node');
+                        }
                     }
                 }
             }
         }
-        //die();
+
+        $this->config('bitly_links.settings')
+            ->set('enabled_content_types', $enabledTypes)
+            ->save();
         parent::submitForm($form, $form_state);
     }
     private function createField($fieldName, $fieldLabel, $bundle, $entityType){
@@ -123,11 +135,8 @@ class BitlyLinksSettingsForm extends ConfigFormBase
 
             ]
         ])->save();
-        /*$storage = \Drupal::entityTypeManager()->getStorage('entity_form_display');
-        $entity_form_display = $storage->load('node.page.default');*/
 
         $entity_form_display = EntityFormDisplay::load($entityType.'.'.$bundle.'.default');
-        //print_r($entity_form_display->getComponents()['bitly_links_field']);die();
         $entity_form_display->setComponent($fieldName, [
             'type' => 'string_textfield',
             'weight' => 8,
@@ -139,10 +148,6 @@ class BitlyLinksSettingsForm extends ConfigFormBase
             ]
         ]);
         $entity_form_display->save();
-        //print_r($entity_form_display->getComponent('bitly_links_field'));die();
-        //$options = $entity_form_display->getComponent($fieldName);
-
-
     }
     private function checkEntityStorage(){
         $storage = \Drupal::entityTypeManager()->getStorage('field_storage_config');

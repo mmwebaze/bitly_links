@@ -63,4 +63,10 @@ class BitlyLinksController extends ControllerBase
 
         return new JsonResponse($output);
     }
+    public function adminOverview(){
+        $build['bitly_links_settings_form'] = $this->formBuilder()->getForm('Drupal\bitly_links\Form\BitlyLinksNodeSettingsForm');
+        //$build['bitly_links_auth_form'] = $this->formBuilder()->getForm('Drupal\bitly_links\Form\BitlyLinksAuthorizationForm');
+
+        return $build;
+    }
 }

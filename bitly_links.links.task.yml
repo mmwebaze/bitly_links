@@ -1,0 +1,19 @@
+bitly_links.bitly_settings:
+  route_name: bitly_links.bitly_settings
+  title: 'Enabled types'
+  base_route: bitly_links.bitly_settings
+bitly_links.authorization_settings:
+  route_name: bitly_links.authorization_settings
+  title: 'Bitly settings'
+  base_route: bitly_links.bitly_settings
+  weight: 80
+bitly_links.bitly_generation:
+  route_name: bitly_links.bitly_generation
+  title: 'Bulk operations'
+  base_route: bitly_links.bitly_settings
+  weight: 90
+#bitly_links.bitly_deletion:
+#  route_name: bitly_links.bitly_deletion
+#  title: 'Bulk deletion'
+#  base_route: bitly_links.bitly_settings
+#  weight: 100

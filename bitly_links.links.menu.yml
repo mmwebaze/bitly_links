@@ -1,24 +1,9 @@
 bitly_links.main_menu:
-  title: 'Bitly Links Settings'
+  title: 'Bitly Links'
   #route_name: bitly_links.bitly_links_config_form
-  route_name: bitly_links.main_menu
-  description: 'A description for the bitly links menu entry'
-  #parent: system.admin_config_system
-  parent: system.admin
+  route_name: bitly_links.bitly_settings
+  description: 'Configure bitly settings and generate links'
+  parent: system.admin_config_search
+  #parent: system.admin
   weight: 30
-
-bitly_links.authorize_app:
-  title: 'Authorize site on Bitly'
-  route_name: bitly_links.authorize_app
-  description: 'Bitly App Authorization.'
-  #parent: system.admin_config_system
-  parent: 'bitly_links.main_menu'
-  weight: 10
-
-bitly_links.settings:
-  title: 'Settings'
-  route_name: bitly_links.settings
-  description: 'Bilty Links Settings'
-  parent: 'bitly_links.main_menu'
-  weight: 20
 

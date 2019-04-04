@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\State\State;
 
 /**
- * Class BitlyFieldConfigForm.
+ * Class BitlyLinksAuthorizationForm.
  */
 class BitlyLinksAuthorizationForm extends FormBase
 {

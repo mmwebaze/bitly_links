@@ -2,20 +2,12 @@ bitly_links.main_menu:
   path: '/admin/bitly_links'
   defaults:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    #_controller: '\Drupal\bitly_links\Controller\BitlyLinksController::adminOverview'
     _title: 'Bitly Links'
   requirements:
     _permission: 'access administration pages'
 
-bitly_links.authorize_app:
-  path: '/admin/bitly_links/authorize'
-  defaults:
-    _form: '\Drupal\bitly_links\Form\BitlyLinksAuthorizationForm'
-    _title: 'App Authorization'
-  requirements:
-    _permission: 'access administration pages'
-  options:
-    _admin_route: TRUE
-
+#Initiate authorization
 bitly_links.app_authorization:
   path: '/bitly_links/authorization'
   defaults:
@@ -48,12 +40,43 @@ bitly_links.shorten_test:
   requirements:
     _permission: 'access administration pages'
 
-bitly_links.settings:
+#admin overview
+bitly_links.bitly_settings:
   path: '/admin/config/bitly_links/settings'
   defaults:
-    _form: '\Drupal\bitly_links\Form\BitlyLinksSettingsForm'
+    _form: '\Drupal\bitly_links\Form\BitlyLinksNodeSettingsForm'
     _title: 'Settings'
   requirements:
     _permission: 'access administration pages'
   options:
     _admin_route: TRUE
+
+bitly_links.authorization_settings:
+  path: '/admin/bitly_links/authorize'
+  defaults:
+    _form: '\Drupal\bitly_links\Form\BitlyLinksAuthorizationForm'
+    _title: 'App Authorization'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+bitly_links.bitly_generation:
+  path: '/admin/config/bitly_links/generation'
+  defaults:
+    _form: '\Drupal\bitly_links\Form\BitlyLinksBulkGenerationForm'
+    _title: 'Bulk operations'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+#bitly_links.bitly_deletion:
+#  path: '/admin/config/bitly_links/deletion'
+#  defaults:
+#    _form: '\Drupal\bitly_links\Form\BitlyLinksBulkDeletionForm'
+#    _title: 'Bulk deletion Bitly links'
+#  requirements:
+#    _permission: 'access administration pages'
+#  options:
+#    _admin_route: TRUE

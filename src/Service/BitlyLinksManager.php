@@ -74,4 +74,10 @@ class BitlyLinksManager implements BitlyLinksServiceInterface
 
         return $response->getBody()->getContents();
     }
+    /*public function createBitlink($longUrl){
+        $url = self::BASEURL.'/v4/bitlinks';
+        $accessToken = $this->state->get('bitly_links_access_token');
+        $bitly = new \stdClass();
+        $bitly->long_url = $longUrl;
+    }*/
 }
