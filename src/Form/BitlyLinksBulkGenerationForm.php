@@ -62,7 +62,13 @@ Only content types that have been enabled to support bitly links will be made av
             '#type' => 'radios',
             '#title' => $this->t('Select enabled content types for which to generate bitly links.'),
             '#options' => $enableContentTypes,
-            '#description' => $this->t('Content types with the bitly_link field enabled.')
+            '#description' => $this->t('Content types with the bitly_link field enabled.'),
+            '#prefix' => '<div id="enabled_types">',
+            '#suffix' => '</div>',
+            '#ajax' => array(
+                'callback' => '::resetWarnings',
+                'event' => 'change',
+            ),
         );
 
         $form['bulk_operation'] = array(
@@ -83,7 +89,7 @@ Only content types that have been enabled to support bitly links will be made av
         );
         $form['specific_nodes'] = array(
             '#type' => 'textarea',
-            '#description' => $this->t('Enter node id or for multiple nodes enter IDs separated by coma.'),
+            '#description' => $this->t('Enter node id or for multiple nodes enter IDs separated by comma.'),
             /*'#attributes' => array(
                 'class' => array('specific_nodes')
             ),*/
@@ -92,7 +98,7 @@ Only content types that have been enabled to support bitly links will be made av
         );
         $form['specific_nodest'] = array(
             '#type' => 'markup',
-            '#markup' => '<div class="specific_nodes">fs</div>',
+            '#markup' => '<div class="specific_nodes"></div>',
         );
         $form['actions']['#type'] = 'actions';
         $form['actions']['submit'] = array(
@@ -124,16 +130,16 @@ Only content types that have been enabled to support bitly links will be made av
      */
     public function submitForm(array &$form, FormStateInterface $form_state){
 
-        $specificOperations = array(2, 3);
-        $operation = $form_state->getValue('bulk_operation');
-        if (in_array($operation, $specificOperations)){
-            $nodes = $form_state->getValue('specific_nodes');
-
-        }
     }
     public function bulkOperation(array &$form, FormStateInterface $form_state){
         $operation = $form_state->getValue('bulk_operation');
         $ajaxResponse = new AjaxResponse();
+        $warningCss = array(
+            'border-color' => '',
+            'border-style' => '',
+        );
+        $ajaxResponse->addCommand(new CssCommand('#edit-specific-nodes--description', ['color' => '']));
+        $ajaxResponse->addCommand(new CssCommand('.nodes', $warningCss));
 
         switch ($operation){
             case 0:
@@ -160,16 +166,29 @@ Only content types that have been enabled to support bitly links will be made av
         return $ajaxResponse;
     }
     public function runOperation(array &$form, FormStateInterface $form_state){
+        $ajaxResponse = new AjaxResponse();
         $specificOperations = array(2, 3);
         $contentType = $form_state->getValue('enabled_types');
         $operation = $form_state->getValue('bulk_operation');
+        $warningCss = array(
+            'border-color' => 'red',
+            'border-style' => 'solid',
+        );
 
-        $ajaxResponse = new AjaxResponse();
+        if (!isset($contentType)){
+
+            $ajaxResponse->addCommand(new CssCommand('#enabled_types', $warningCss));
+            $ajaxResponse->addCommand(new HtmlCommand('.specific_nodes', 'Select Content type'));
+            $ajaxResponse->addCommand(new CssCommand('.specific_nodes', ['color' => 'red']));
+            return $ajaxResponse;
+        }
 
         if (in_array($operation, $specificOperations)){
             $nodes = $form_state->getValue('specific_nodes');
             if(!isset($nodes) || trim($nodes) == ''){
-                $status = 'please submit some information';
+                $ajaxResponse->addCommand(new CssCommand('#edit-specific-nodes--description', ['color' => 'red']));
+                $ajaxResponse->addCommand(new CssCommand('.nodes', $warningCss));
+                return $ajaxResponse;
             }
             else{
                 $nodes = explode(',', $nodes);
@@ -181,6 +200,19 @@ Only content types that have been enabled to support bitly links will be made av
         }
 
         $ajaxResponse->addCommand(new HtmlCommand('.specific_nodes', $status));
+
+        return $ajaxResponse;
+    }
+    public function resetWarnings(array &$form, FormStateInterface $form_state){
+        $ajaxResponse = new AjaxResponse();
+
+        $warningCss = array(
+            'border-color' => '',
+            'border-style' => '',
+        );
+        $ajaxResponse->addCommand(new CssCommand('#enabled_types', $warningCss));
+        $ajaxResponse->addCommand(new HtmlCommand('.specific_nodes', ''));
+        $ajaxResponse->addCommand(new CssCommand('.specific_nodes', ['color' => '']));
 
         return $ajaxResponse;
     }
