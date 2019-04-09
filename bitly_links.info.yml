@@ -1,7 +1,5 @@
-name: 'bitly_links'
+name: 'Bitly Links'
 type: module
-description: 'Generates bitly links'
+description: 'Generates bitly links for nodes.'
 core: 8.x
-package: 'bitly'
-dependencies:
-  - field
+package: 'Bitly'

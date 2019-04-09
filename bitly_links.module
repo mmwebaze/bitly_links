@@ -6,6 +6,9 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Implements hook_help().
@@ -32,4 +35,65 @@ function bitly_links_theme() {
       'render element' => 'children',
     ],
   ];
+}
+function bitly_links_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $config_factory = Drupal::service('config.factory');
+    $config = $config_factory->get('bitly_links.settings');
+    $enabled_content_types = $config->get('enabled_content_types');
+
+    foreach ($enabled_content_types as $machine_name => $label){
+        $enabled_form_id = 'node_'.$machine_name.'_form';
+        if ($enabled_form_id == $form_id && $config->get('enable_on_node_creation') == 1){
+            $form['enable_on_node_creation'] = array(
+                '#type' => 'checkbox',
+                '#title' => t('Create bitly link for this content'),
+                '#weight' => ($form['bitly_links_field']['#weight'] + 1),
+                '#default_value' => $config->get('enable_on_node_creation'),
+            );
+            $form['#entity_builders'][] = 'bitly_links_node_builder';
+            //$form['actions']['submit']['#submit'][] = 'bitly_links_form_submit';
+        }
+    }
+}
+/**
+ * Entity form builder to add the enable_on_node_creation information to the node.
+ *
+ * @todo: Remove this in favor of an entity field.
+ */
+function bitly_links_node_builder($entity_type, \Drupal\node\NodeInterface $entity, &$form, FormStateInterface $form_state) {
+    $entity->enable_on_node_creation = $form_state->getValue('enable_on_node_creation');
+}
+function bitly_links_form_submit(array $form, FormStateInterface $form_state){
+    if ($form_state->getValue('enable_on_node_creation')){
+        $node = $form_state->getFormObject();
+        $node->enable_on_node_creation = 1;
+    }
+}
+/**
+ * Implements hook_entity_insert().
+ */
+function bitly_links_entity_insert(EntityInterface $entity) {
+    if (isset($entity->enable_on_node_creation) && $entity->enable_on_node_creation == 1){
+        $config_factory = Drupal::service('config.factory');
+        $config = $config_factory->get('bitly_links.settings');
+        $enabled_content_types = $config->get('enabled_content_types');
+        $machine_names = array_keys($enabled_content_types);
+        if ($entity instanceof ContentEntityInterface && in_array($entity->getType(), $machine_names)){
+            $id = $entity->id();
+            if(isset($id)){
+                $bulkOperationManager = Drupal::service('bitly_links.bulk_operations');
+                $bulkOperationManager->generate($entity->getType(), 2, [$id]);
+            }
+        }
+    }
+}
+/**
+ * Implements hook_module_implements_alter().
+ */
+function bitly_links_module_implements_alter(&$implementations, $hook) {
+    if ($hook == 'entity_insert'){
+        $group = $implementations['bitly_links'];
+        unset($implementations['bitly_links']);
+        $implementations['bitly_links'] = $group;
+    }
 }

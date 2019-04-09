@@ -75,11 +75,17 @@ class BitlyLinksNodeSettingsForm extends ConfigFormBase
             $this->enableTypes[$type] = $contentType->label();
             $form['enabled_content_types'][$type] = array(
                 '#type' => 'checkbox',
-                '#title' => $contentType->label(),
+                '#title' => $this->t($contentType->label()),
                 '#default_value' => in_array($type, $default_values) ? 1 : 0,
             );
         }
 
+        $form['enable_on_node_creation'] = array(
+            '#type' => 'checkbox',
+            '#title' => $this->t('Enable on node creation'),
+            '#description' => $this->t('Allows for generation of bitly link on node creation.'),
+            '#default_value' => $config->get('enable_on_node_creation'),
+        );
         return parent::buildForm($form, $form_state);
     }
     /**
@@ -106,6 +112,7 @@ class BitlyLinksNodeSettingsForm extends ConfigFormBase
 
         $this->config('bitly_links.settings')
             ->set('enabled_content_types', $enabledTypes)
+            ->set('enable_on_node_creation', $form_state->getValue('enable_on_node_creation'))
             ->save();
         parent::submitForm($form, $form_state);
     }
