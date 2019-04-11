@@ -11,6 +11,6 @@ services:
       - { name: bitly_links_bulk_operations }
   bitly_links.drush:
     class: Drupal\bitly_links\Commands\BitlyLinksDrushCommands
-    arguments: ['@bitly_links.bulk_operations']
+    arguments: ['@bitly_links.bulk_operations', '@config.factory']
     tags:
       - { name: drush.command }

@@ -6,13 +6,13 @@ use Exception;
 use Throwable;
 
 /**
- * Defines an exception thrown when an invalid bitly links drush command option is submitted.
+ * Defines an exception thrown when content type doesn't have a bitly links field enabled.
  *
- * Class InvalidDrushCommandException
+ * Class UnsupportedContentTypeException
  *
  * @package Drupal\bitly_links\Exception
  */
-class InvalidDrushCommandException extends Exception
+class UnsupportedContentTypeException extends Exception
 {
     public function __construct(string $message = "", int $code = 0, Throwable $previous = null)
     {

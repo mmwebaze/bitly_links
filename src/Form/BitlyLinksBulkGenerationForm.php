@@ -16,12 +16,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BitlyLinksBulkGenerationForm extends FormBase
 {
-    /**
-     * @var \Drupal\Core\Config\ConfigFactoryInterface;
-     */
     protected $config;
     /**
-     * @var BulkOperationServiceInterface Z
+     * @var BulkOperationServiceInterface
      */
     protected $bulkOperationService;
 
