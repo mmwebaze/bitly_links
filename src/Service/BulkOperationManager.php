@@ -49,10 +49,13 @@ class BulkOperationManager implements BulkOperationServiceInterface
     /**
      * @inheritdoc
      */
-    public function generate($contentType, $operation, $nodes = array()){
+    public function generate($contentType, $operation, $baseUrl = NULL, $nodes = array()){
         $status = 'Operation '.$operation.' failed';
         $storage = $this->entityTypeManager->getStorage('node');
-        $baseUrl = $this->requestContext->getCompleteBaseUrl();
+        if (!isset($baseUrl)){
+            $baseUrl = $this->requestContext->getCompleteBaseUrl();
+        }
+        //$baseUrl = $this->requestContext->getCompleteBaseUrl();
 
         if (empty($nodes)){
             $query = $storage->getQuery()->condition('type', $contentType);

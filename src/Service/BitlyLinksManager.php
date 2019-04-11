@@ -59,9 +59,7 @@ class BitlyLinksManager implements BitlyLinksServiceInterface
 
         $url = self::BASEURL.'/v4/shorten';
         $accessToken = $this->state->get('bitly_links_access_token');
-        //print_r($accessToken);die('bread');
         $bitly = new \stdClass();
-        //$bitly->long_url = 'http://dev-open-farm.pantheonsite.io';
         $bitly->long_url = $longUrl;
 
         $response = $this->client->post($url, [
@@ -74,10 +72,4 @@ class BitlyLinksManager implements BitlyLinksServiceInterface
 
         return $response->getBody()->getContents();
     }
-    /*public function createBitlink($longUrl){
-        $url = self::BASEURL.'/v4/bitlinks';
-        $accessToken = $this->state->get('bitly_links_access_token');
-        $bitly = new \stdClass();
-        $bitly->long_url = $longUrl;
-    }*/
 }

@@ -51,7 +51,6 @@ function bitly_links_form_alter(&$form, FormStateInterface $form_state, $form_id
                 '#default_value' => $config->get('enable_on_node_creation'),
             );
             $form['#entity_builders'][] = 'bitly_links_node_builder';
-            //$form['actions']['submit']['#submit'][] = 'bitly_links_form_submit';
         }
     }
 }
@@ -63,12 +62,7 @@ function bitly_links_form_alter(&$form, FormStateInterface $form_state, $form_id
 function bitly_links_node_builder($entity_type, \Drupal\node\NodeInterface $entity, &$form, FormStateInterface $form_state) {
     $entity->enable_on_node_creation = $form_state->getValue('enable_on_node_creation');
 }
-function bitly_links_form_submit(array $form, FormStateInterface $form_state){
-    if ($form_state->getValue('enable_on_node_creation')){
-        $node = $form_state->getFormObject();
-        $node->enable_on_node_creation = 1;
-    }
-}
+
 /**
  * Implements hook_entity_insert().
  */

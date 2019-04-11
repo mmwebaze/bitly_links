@@ -9,3 +9,8 @@ services:
     arguments: ['@bitly_links.manager_service', '@language_manager', '@path.alias_manager', '@router.request_context', '@entity_type.manager']
     tags:
       - { name: bitly_links_bulk_operations }
+  bitly_links.drush:
+    class: Drupal\bitly_links\Commands\BitlyLinksDrushCommands
+    arguments: ['@bitly_links.bulk_operations']
+    tags:
+      - { name: drush.command }

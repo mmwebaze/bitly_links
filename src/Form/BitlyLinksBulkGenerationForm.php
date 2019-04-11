@@ -166,6 +166,7 @@ Only content types that have been enabled to support bitly links will be made av
         return $ajaxResponse;
     }
     public function runOperation(array &$form, FormStateInterface $form_state){
+        $baseUrl = NULL;
         $ajaxResponse = new AjaxResponse();
         $specificOperations = array(2, 3);
         $contentType = $form_state->getValue('enabled_types');
@@ -192,11 +193,11 @@ Only content types that have been enabled to support bitly links will be made av
             }
             else{
                 $nodes = explode(',', $nodes);
-                $status = $this->bulkOperationService->generate($contentType, $operation, $nodes);
+                $status = $this->bulkOperationService->generate($contentType, $operation, $baseUrl, $nodes);
             }
         }
         else{
-            $status = $this->bulkOperationService->generate($contentType, $operation);
+            $status = $this->bulkOperationService->generate($contentType, $operation, $baseUrl);
         }
 
         $ajaxResponse->addCommand(new HtmlCommand('.specific_nodes', $status));

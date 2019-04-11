@@ -15,5 +15,5 @@ interface BulkOperationServiceInterface
      * @throws \Drupal\Core\Entity\EntityStorageException
      *  This exception is thrown if there is a problem saving the updated node
      */
-    public function generate($contentType, $operation, $nodes = array());
+    public function generate($contentType, $operation, $baseUrl = NULL, $nodes = array());
 }
