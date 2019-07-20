@@ -41,16 +41,18 @@ function bitly_links_form_alter(&$form, FormStateInterface $form_state, $form_id
     $config = $config_factory->get('bitly_links.settings');
     $enabled_content_types = $config->get('enabled_content_types');
 
-    foreach ($enabled_content_types as $machine_name => $label){
-        $enabled_form_id = 'node_'.$machine_name.'_form';
-        if ($enabled_form_id == $form_id && $config->get('enable_on_node_creation') == 1){
-            $form['enable_on_node_creation'] = array(
-                '#type' => 'checkbox',
-                '#title' => t('Create bitly link for this content'),
-                '#weight' => ($form['bitly_links_field']['#weight'] + 1),
-                '#default_value' => $config->get('enable_on_node_creation'),
-            );
-            $form['#entity_builders'][] = 'bitly_links_node_builder';
+    if (!is_null($enabled_content_types)){
+        foreach ($enabled_content_types as $machine_name => $label){
+            $enabled_form_id = 'node_'.$machine_name.'_form';
+            if ($enabled_form_id == $form_id && $config->get('enable_on_node_creation') == 1){
+                $form['enable_on_node_creation'] = array(
+                    '#type' => 'checkbox',
+                    '#title' => t('Create bitly link for this content'),
+                    '#weight' => ($form['bitly_links_field']['#weight'] + 1),
+                    '#default_value' => $config->get('enable_on_node_creation'),
+                );
+                $form['#entity_builders'][] = 'bitly_links_node_builder';
+            }
         }
     }
 }

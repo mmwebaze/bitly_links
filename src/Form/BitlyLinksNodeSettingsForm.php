@@ -58,8 +58,13 @@ class BitlyLinksNodeSettingsForm extends ConfigFormBase
     public function buildForm(array $form, FormStateInterface $form_state) {
         $config = $this->config('bitly_links.settings');
         $enabled_types = $config->get('enabled_content_types');
+
+        if (is_null($enabled_types)){
+            $enabled_types = array();
+        }
+
         $default_values = array_keys($enabled_types);
-        //print_r($default_values);die();
+
         $form['enabled_content_types'] = [
             '#type' => 'details',
             '#open' => TRUE,
@@ -157,7 +162,7 @@ class BitlyLinksNodeSettingsForm extends ConfigFormBase
         $entity_form_display->save();
     }
     private function checkEntityStorage(){
-        $storage = \Drupal::entityTypeManager()->getStorage('field_storage_config');
+        $storage = $this->entityTypeManager->getStorage('field_storage_config');
         $type = $storage->load('node.bitly_links_field');
 
         return count($type);

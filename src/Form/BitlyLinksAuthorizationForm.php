@@ -17,6 +17,10 @@ class BitlyLinksAuthorizationForm extends FormBase
     {
         $this->state = $state;
     }
+
+    /**
+     * {@inheritdoc}
+     */
     public static function create(ContainerInterface $container) {
         return new static(
             //$container->get('bitly_links.manager_service'),

@@ -2,7 +2,6 @@
 
 namespace Drupal\bitly_links\Commands;
 
-
 use Drupal\bitly_links\Exception\InvalidDrushCommandException;
 use Drupal\bitly_links\Exception\UnsupportedContentTypeException;
 use Drupal\bitly_links\Service\BulkOperationServiceInterface;
@@ -14,6 +13,8 @@ class BitlyLinksDrushCommands extends DrushCommands
 {
     private $enabledContentTypes;
     /**
+     * The bulk operation service.
+     *
      * @var BulkOperationServiceInterface
      */
     protected $bulkOperationService;
@@ -50,7 +51,7 @@ class BitlyLinksDrushCommands extends DrushCommands
             $operation = $options['op'];
         }
         else{
-            $operation = 'nodes';//$options['nodes'];
+            $operation = 'nodes';
         }
         switch ($operation){
             case 'all':
