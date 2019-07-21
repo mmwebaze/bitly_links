@@ -78,7 +78,7 @@ function bitly_links_entity_insert(EntityInterface $entity) {
             $id = $entity->id();
             if(isset($id)){
                 $bulkOperationManager = Drupal::service('bitly_links.bulk_operations');
-                $bulkOperationManager->generate($entity->getType(), 2, [$id]);
+                $bulkOperationManager->generate($entity->getType(), 2, NULL, [$id]);
             }
         }
     }

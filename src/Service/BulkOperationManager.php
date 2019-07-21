@@ -55,7 +55,6 @@ class BulkOperationManager implements BulkOperationServiceInterface
         if (!isset($baseUrl)){
             $baseUrl = $this->requestContext->getCompleteBaseUrl();
         }
-        //$baseUrl = $this->requestContext->getCompleteBaseUrl();
 
         if (empty($nodes)){
             $query = $storage->getQuery()->condition('type', $contentType);
@@ -76,7 +75,6 @@ class BulkOperationManager implements BulkOperationServiceInterface
                     case 1:
                         $response = $this->bitlyLinksService->shorten($baseUrl.$aliasPath);
                         $bityLink = json_decode($response)->link;
-                        //$bitlyLink = $node->get('bitly_links_field')->value;
                         $hasBitlyLink = $node->get('bitly_links_field')->isEmpty();
                         if($hasBitlyLink){
                             $node->set('bitly_links_field', $bityLink);

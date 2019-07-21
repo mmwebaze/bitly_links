@@ -10,7 +10,8 @@ use Drupal\Core\State\State;
 
 class BitlyLinksManager implements BitlyLinksServiceInterface
 {
-    private const BASEURL = "https://api-ssl.bitly.com";
+    //for purposes of backward compatibility, visibility (private) will be removed in beta releases.
+    const BASEURL = "https://api-ssl.bitly.com";
     private $clientId;
     private $clientSecret;
     private $redirectUri;
